@@ -33,11 +33,7 @@ const getAllList = async (req, res) => {
             // success
             const json = response.data?.data;
             console.log(json[0]);
-            // json.forEach(crypto => {
-            //     console.log(`${crypto.name} (${crypto.symbol})`);
-            //   });
             return res.send({ "data": json });
-            // resolve(json);
         }
     // });
 
