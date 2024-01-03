@@ -18,10 +18,11 @@ const getAllList = async (req, res) => {
       };
     // new Promise(async (resolve, reject) => {
         try {
-            response = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest', {
-            params,
-            headers
-            });
+            // response = await axios.get('https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest', {
+            // params,
+            // headers
+            // });
+            response = await axios.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=USD");
             // console.log("RESPONSE -> ", typeof(response))
         } catch (ex) {
             response = null;
@@ -31,11 +32,32 @@ const getAllList = async (req, res) => {
         }
         if (response) {
             // success
-            const json = response.data?.data;
-            console.log(json[0]);
+            const json = response.data;
+            // console.log(json);
             return res.send({ "data": json });
         }
     // });
+
+    return res.send({ "ERROR": res?.data?.status });
+};
+
+const getPrice = async (req, res) => {
+
+    const body = req?.body;
+
+    let response = null;
+
+        try {
+            response = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${body.id}&vs_currencies=${body.currency}`);
+        } catch (ex) {
+            response = null;
+            console.log(ex);
+        }
+        if (response) {
+            const json = response.data;
+            console.log(json, body)
+            return res.send({ "data": json });
+        }
 
     return res.send({ "ERROR": "ERROR" });
 };
@@ -43,5 +65,6 @@ const getAllList = async (req, res) => {
 module.exports = {
 
     allList: getAllList,
+    getPrice: getPrice,
 
 };
